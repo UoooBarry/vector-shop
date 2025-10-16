@@ -1,0 +1,35 @@
+services:
+  db:
+    image: pgvector/pgvector:0.8.1-pg18
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: vecstore_development
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    env_file:
+      - .env.dev
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
+  bundle_cache:

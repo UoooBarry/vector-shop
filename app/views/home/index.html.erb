@@ -1,0 +1,16 @@
+<h1>Product List</h1>
+
+<% @products.each do |product| %>
+  <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+    <p><strong>Name:</strong> <%= product.name %></p>
+    <p><strong>Category:</strong> <%= product.category %></p>
+
+    <h4>Similar Products:</h4>
+    <% product.similar_products(3).each do |similar| %>
+      <% next if similar.id == product.id %>
+      <div style="margin-left: 15px;">
+        • <%= similar.name %> (<%= similar.category %>)
+      </div>
+    <% end %>
+  </div>
+<% end %>
