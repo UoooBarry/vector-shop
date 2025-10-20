@@ -50,9 +50,9 @@ GEMINI_API_KEY = YOUR_API_KEY
 RubyLLM.models.load_from_json!
 Model.save_to_database
 
-Product.each { |p| CreateProductScenarioService.call(p) }
-Product.each { |p| CalculateScenarioRelatedEmbeddingService.call(p) }
-Customer.each { |p| CreateCustomerScenarioService.call(p) }
-Customer.each { |p| CalculateScenarioRelatedEmbeddingService.call(p) }
+Product.all.each { |p| CreateProductScenarioService.call(p) }
+Product.all.each { |p| CalculateScenarioRelatedEmbeddingService.call(p) }
+Customer.all.each { |p| CreateCustomerScenarioService.call(p) }
+Customer.all.each { |p| CalculateScenarioRelatedEmbeddingService.call(p) }
 ```
 
