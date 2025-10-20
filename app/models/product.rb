@@ -8,10 +8,10 @@ class Product < ApplicationRecord
   has_neighbors :embedding
 
   def similar_products(count = 1)
-    nearest_neighbors(:embedding, distance: "euclidean").first(count)
+    nearest_neighbors(:embedding, distance: "cosine").first(count)
   end
 
   def calculate_embedding
-    CalculateProductEmbeddingService.async_call(self)
+    CalculateScenarioRelatedEmbeddingService.async_call(self)
   end
 end

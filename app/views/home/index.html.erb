@@ -1,16 +1,137 @@
-<h1>Product List</h1>
+<style>
+  body {
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    margin: 0;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  h1, h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 15px;
+  }
+  .product-grid, .similar-products-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+  }
+  @media (min-width: 768px) {
+    .product-grid, .similar-products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .product-grid, .similar-products-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .product-card, .similar-product-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  .product-card p, .similar-product-card p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 16px;
+  }
+  .product-card p strong, .similar-product-card p strong {
+    color: #333;
+  }
+  .product-card h4 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+  .similar-product {
+    margin-left: 15px;
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  .customer-select {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .customer-select select {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+  }
+  .order-history {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  .order-history p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 14px;
+  }
+  .order-history p strong {
+    color: #333;
+  }
+</style>
+<body>
+<div class="container">
+  <h1>Product List</h1>
 
-<% @products.each do |product| %>
-  <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-    <p><strong>Name:</strong> <%= product.name %></p>
-    <p><strong>Category:</strong> <%= product.category %></p>
-
-    <h4>Similar Products:</h4>
-    <% product.similar_products(3).each do |similar| %>
-      <% next if similar.id == product.id %>
-      <div style="margin-left: 15px;">
-        • <%= similar.name %> (<%= similar.category %>)
-      </div>
+  <!-- Customer Selection Dropdown -->
+  <div class="customer-select">
+    <%= form_tag home_customer_details_path(format: :turbo_stream), method: :get, data: { turbo_frame: "customer_details" } do %>
+      <%= select_tag :customer_id,
+        options_from_collection_for_select(@customers, :id, :name, params[:customer_id]),
+        include_blank: "Select a Customer",
+        onchange: "this.form.requestSubmit()" %>
     <% end %>
   </div>
-<% end %>
+
+  <!-- Turbo Frame for Order History and Similar Products -->
+  <turbo-frame id="customer_details">
+  </turbo-frame>
+
+    <!-- Original Product List -->
+    <h3>All Products</h3>
+    <div class="product-grid">
+      <% @products.each do |product| %>
+        <div class="product-card">
+          <p><strong>Name:</strong> <%= product.name %></p>
+          <p><strong>Category:</strong> <%= product.category %></p>
+          <h4>Similar Products:</h4>
+          <div>
+            <% product.similar_products(3).each do |similar| %>
+              <% next if similar.id == product.id %>
+              <div class="similar-product">
+                • <%= similar.name %> (<%= similar.category %>)
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</body>

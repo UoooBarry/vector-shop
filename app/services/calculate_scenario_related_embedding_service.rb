@@ -1,24 +1,24 @@
-class CalculateProductEmbeddingService < ApplicationService
+class CalculateScenarioRelatedEmbeddingService < ApplicationService
   VECTOR_DIM = 3072.freeze
 
-  def initialize(product)
-    @product = product
+  def initialize(object)
+    @object = object
   end
 
   def call
-    return if @product.embedding.present?
-    return if @product.scenario_tags.empty?
+    return if @object.embedding.present?
+    return if @object.scenario_tags.empty?
 
-    vec = build_product_vector(@product)
+    vec = build_vector(@object)
     return if vec.nil?
 
-    @product.update!(embedding: vec)
+    @object.update!(embedding: vec)
   end
 
   private
 
   # 加权平均
-  def build_product_vector(product)
+  def build_vector(product)
     tag_matchings = product.scenario_taggings.includes(:scenario_tag)
     return nil if tag_matchings.empty?
 

@@ -35,6 +35,11 @@ docker-compose run --rm web ./bin/rails db:prepare
 docker-compose run --rm web ./bin/rails db:seed
 ```
 
+.env.local
+```dotenv
+GEMINI_API_KEY = YOUR_API_KEY
+```
+
 ## 初始化向量
 
 ```ruby
@@ -42,6 +47,8 @@ docker-compose run --rm web ./bin/rails db:seed
 # docker-compose run -rm web ./bin/rails c
 
 Product.each { |p| CreateProductScenarioService.call(p) }
-Product.each { |p| CalculateEmbeddingService.call(p) }
+Product.each { |p| CalculateScenarioRelatedEmbeddingService.call(p) }
+Customer.each { |p| CreateCustomerScenarioService.call(p) }
+Customer.each { |p| CalculateScenarioRelatedEmbeddingService.call(p) }
 ```
 

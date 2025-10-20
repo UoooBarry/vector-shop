@@ -1,0 +1,28 @@
+<%= turbo_stream.update "customer_details" do %>
+  <% if @selected_customer %>
+    <h2>Order History for <%= @selected_customer.name %></h2>
+    <div class="order-history">
+    <% if @selected_customer.orders.empty? %>
+      <p>No orders found for this customer.</p>
+    <% else %>
+      <% @selected_customer.orders.includes(:product).each do |order| %>
+        <p><strong>Product:</strong> <%= order.product.name %> (<%= order.product.category %>)</p>
+        <p><strong>Quantity:</strong> <%= order.quantity %></p>
+        <p><strong>Total Price:</strong> $<%= order.total_price.to_f.round(2) %></p>
+        <p><strong>Purchased At:</strong> <%= order.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+        <hr style="border-top: 1px solid #ddd; margin: 10px 0;">
+      <% end %>
+    <% end %>
+    </div>
+
+    <h3>Recommended Products</h3>
+    <div class="similar-products-grid">
+    <% @selected_customer.similar_products(10).each do |product| %>
+      <div class="similar-product-card">
+      <p><strong>Name:</strong> <%= product.name %></p>
+      <p><strong>Category:</strong> <%= product.category %></p>
+      </div>
+    <% end %>
+    </div>
+  <% end %>
+<% end %>
