@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @products = Product.where.not(embedding: nil)
+    @products = Product.where.not(embedding: nil).includes(:scenario_tags)
     @customers = Customer.where.not(embedding: nil)
   end
 

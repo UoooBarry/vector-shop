@@ -121,6 +121,7 @@
         <div class="product-card">
           <p><strong>Name:</strong> <%= product.name %></p>
           <p><strong>Category:</strong> <%= product.category %></p>
+          <p><strong>Tags:</strong><div style="font-size: 12px; font-weight: light; color: grey"><%= product.scenario_tags.pluck(:scenario).join(", ") %></div></p>
           <h4>Similar Products:</h4>
           <div>
             <% product.similar_products(3).each do |similar| %>

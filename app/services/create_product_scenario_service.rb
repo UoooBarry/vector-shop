@@ -22,7 +22,7 @@ class CreateProductScenarioService < ApplicationService
 
   def product_scene_prompt(product)
     <<~PROMPT
-    You are a shopping behavior analysis assistant. Based on the product information below, determine the most likely purchase scenario for the product.
+    You are a shopping behavior analysis assistant. Based on the product information below, determine the most likely purchase scenarios for the product(at least 3).
     Your output must be strictly in JSON format, with the following keys:
       - "scenario": a short text describing the purchase scenario (e.g., "Birthday gift", "Daily use", "Office supplies")
       - "confidence": a number between 0 and 1 representing how well this scenario fits the product
