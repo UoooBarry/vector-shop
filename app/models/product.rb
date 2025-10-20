@@ -12,6 +12,6 @@ class Product < ApplicationRecord
   end
 
   def calculate_embedding
-    ServiceAsyncWrapper.perform_later(CalculateProductEmbeddingService, self)
+    CalculateProductEmbeddingService.async_call(self)
   end
 end

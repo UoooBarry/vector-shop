@@ -8,6 +8,6 @@ class ScenarioTag < ApplicationRecord
   after_create_commit :calculate_embedding
 
   def calculate_embedding
-    ServiceAsyncWrapper.perform_later(CalculateEmbeddingService, self, [ scenario ])
+    CalculateEmbeddingService.async_call(self, [ scenario ])
   end
 end
