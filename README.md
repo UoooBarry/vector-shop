@@ -35,7 +35,7 @@ docker-compose run --rm web ./bin/rails db:prepare
 docker-compose run --rm web ./bin/rails db:seed
 ```
 
-.env.local
+.env.dev
 ```dotenv
 GEMINI_API_KEY = YOUR_API_KEY
 ```
@@ -45,6 +45,10 @@ GEMINI_API_KEY = YOUR_API_KEY
 ```ruby
 # 在Rails Console内运行
 # docker-compose run -rm web ./bin/rails c
+
+# 保存一次LLM Model信息
+RubyLLM.models.load_from_json!
+Model.save_to_database
 
 Product.each { |p| CreateProductScenarioService.call(p) }
 Product.each { |p| CalculateScenarioRelatedEmbeddingService.call(p) }
